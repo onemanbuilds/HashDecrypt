@@ -8,8 +8,6 @@ from datetime import datetime
 import requests
 import json
 
-from requests.api import request
-
 class Main:
     def clear(self):
         if name == 'posix':
