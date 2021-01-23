@@ -8,6 +8,8 @@ from datetime import datetime
 import requests
 import json
 
+from requests.sessions import session
+
 class Main:
     def clear(self):
         if name == 'posix':
@@ -103,6 +105,8 @@ class Main:
         self.maxcpm = 0
         self.lock = Lock()
 
+        self.session = requests.Session()
+
         config = self.ReadJson('[Data]/configs.json','r')
 
         self.use_proxy = config['use_proxy']
@@ -128,7 +132,7 @@ class Main:
 
             payload = json.dumps(message_to_send)
 
-            response = requests.post(self.webhook_url,data=payload,headers=headers,proxies=proxy)
+            response = self.session.post(self.webhook_url,data=payload,headers=headers,proxies=proxy)
 
             if response.text == "":
                 pass
@@ -163,7 +167,7 @@ class Main:
 
             proxy = self.GetRandomProxy()
         
-            response = requests.get(f'https://hashtoolkit.com/decrypt-hash/?hash={hash}',headers=headers,proxies=proxy)
+            response = self.session.get(f'https://hashtoolkit.com/decrypt-hash/?hash={hash}',headers=headers,proxies=proxy)
 
             self.maxcpm += 1
 
